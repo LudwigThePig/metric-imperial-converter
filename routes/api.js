@@ -1,17 +1,13 @@
-/*
-*
-*
-*       Complete the API routing below
-*
-*
-*/
-
 'use strict';
 
 var expect = require('chai').expect;
 var ConvertHandler = require('../controllers/convertHandler.js');
 
 module.exports = function (app) {
+  
+  app.route('/', (req, res)=>{
+    res.sendFile(process.cwd() + '/views/index.html')
+  });
   
   var convertHandler = new ConvertHandler();
 
@@ -26,5 +22,5 @@ module.exports = function (app) {
       
       //res.json
     });
-    
+
 };

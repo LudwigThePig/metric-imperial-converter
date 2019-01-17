@@ -1,11 +1,3 @@
-/*
-*
-*
-*       Complete the handler logic below
-*       
-*       
-*/
-
 function ConvertHandler() {
   
   this.getNum = function(input) {
@@ -36,8 +28,44 @@ function ConvertHandler() {
     const galToL = 3.78541;
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
-    var result;
     
+    let val;
+    let result;
+    
+    switch (initUnit){
+      case 'gal':
+        val = initNum * galToL;
+        result = val + " liters";
+        break;
+        
+      case 'L':
+        val = initNum / galToL;
+        result = val + " gallons";
+        break;
+        
+      case 'lbs':
+        val = initNum * lbsToKg;
+        result = val + " liters"
+        break;
+        
+      case 'kg':
+        val = initNum / lbsToKg;
+        result = val + " pounds"
+        break;
+        
+      case 'mi':
+        val = initNum * miToKm;
+        result = val + " kilometers"
+        break;
+        
+      case 'km':
+        val = initNum / miToKm;
+        result = val + " miles"
+        break;
+        
+      default:
+        result = "That is not a valid unit";
+    }
     return result;
   };
   
