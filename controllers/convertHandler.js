@@ -1,20 +1,59 @@
 function ConvertHandler() {
   
   this.getNum = function(input) {
-    var result;
+    let firstLetter = input.indexOf(input.match(/[a-zA-Z]/));
+    let result;
+    
+    if (firstLetter === 0){ //starts with letter
+      result = 'invalid';
+    } else {
+    result = Number(input.substring(0, firstLetter - 1));
+    }
     
     return result;
   };
   
   this.getUnit = function(input) {
-    var result;
+    
+    const units = ['mi', 'km', 'lbs', 'kg', 'gal', 'l']
+    let firstLetter = input.indexOf(input.match(/[a-zA-Z]/));
+    let temp = input.slice(firstLetter).toLowerCase();
+    let result;
+
+    if (units.includes(temp)){
+      result = temp;
+    } else {
+      result = 'invalid'
+    }
     
     return result;
   };
   
   this.getReturnUnit = function(initUnit) {
-    var result;
+    let result;
     
+    switch (initUnit){
+      case 'mi':
+        result = 'km';
+        break;
+      case 'km':
+        result = 'mi';
+        break;
+      case 'lbs':
+        result = 'kg';
+        break;
+      case 'kg':
+        result = 'lbs';
+        break;
+      case 'gal':
+        result = 'l';
+        break;
+      case 'l':
+        result = 'gal';
+        break;
+      default:
+        result = 'invalid';
+  }    
     return result;
   };
 
@@ -29,42 +68,35 @@ function ConvertHandler() {
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
     
-    let val;
     let result;
     
     switch (initUnit){
       case 'gal':
-        val = initNum * galToL;
-        result = val + " liters";
+        result = initNum * galToL;
         break;
         
       case 'L':
-        val = initNum / galToL;
-        result = val + " gallons";
+        result = initNum / galToL;
         break;
         
       case 'lbs':
-        val = initNum * lbsToKg;
-        result = val + " liters"
+        result = initNum * lbsToKg;
         break;
         
       case 'kg':
-        val = initNum / lbsToKg;
-        result = val + " pounds"
+        result = initNum / lbsToKg;
         break;
         
       case 'mi':
-        val = initNum * miToKm;
-        result = val + " kilometers"
+        result = initNum * miToKm;
         break;
         
       case 'km':
-        val = initNum / miToKm;
-        result = val + " miles"
+        result = initNum / miToKm;
         break;
         
       default:
-        result = "That is not a valid unit";
+        result = "invalid";
     }
     return result;
   };
