@@ -109,28 +109,38 @@ suite('Unit Tests', function(){
     });
     
     test('L to Gal', function(done) {
-      
-      //done();
+      const input = [5, 'l'];
+      const output = 1.32086;
+      assert.approximately(convertHandler.convert(input[0], input[1]), output, 0.1);
+      done();
     });
     
     test('Mi to Km', function(done) {
-      
-      //done();
+      const input = [3.1, 'mi'];
+      const output = 5;
+      assert.approximately(convertHandler.convert(input[0], input[1]), output, 0.1);
+      done();
     });
     
     test('Km to Mi', function(done) {
-      
-      //done();
+      const input = [5, 'km'];
+      const output = 3.1;
+      assert.approximately(convertHandler.convert(input[0], input[1]), output, 0.1);
+      done();
     });
     
     test('Lbs to Kg', function(done) {
-      
-      //done();
+      const input = [2.2, 'lbs'];
+      const output = 1;
+      assert.approximately(convertHandler.convert(input[0], input[1]), output, 0.1);
+      done();
     });
     
     test('Kg to Lbs', function(done) {
-      
-      //done();
+      const input = [2, 'kg'];
+      const output = 4.4;
+      assert.approximately(convertHandler.convert(input[0], input[1]), output, 0.1);
+      done();
     });
     
   });
