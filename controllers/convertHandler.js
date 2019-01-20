@@ -118,6 +118,19 @@ function ConvertHandler() {
     return result;
   };
   
+  this.spellOutUnit = function(unit){
+    const LC = unit.toLowerCase();
+    const units = {
+      gal: 'Gallons',
+      l: 'Liters',
+      mi: 'Miles',
+      km: 'Kilometers',
+      lbs: 'Pounds',
+      kg: 'Kilograms'
+    }
+    return units[LC];
+  }
+  
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
     var result;
     
