@@ -1,13 +1,30 @@
 function ConvertHandler() {
   
   this.getNum = function(input) {
-    let firstLetter = input.indexOf(input.match(/[a-zA-Z]/));
+    let firstLetter = input.indexOf(input.match(/[a-z]/i));
     let result;
     
     if (firstLetter === 0){ //starts with letter
-      result = 'invalid';
+      result = 1;
     } else {
-    result = Number(input.substring(0, firstLetter - 1));
+      result = input.slice(0, firstLetter);
+      
+      if (result.includes('/')){ // handles fractions
+          let fraction = result.split(/[/]/g);
+          if (fraction.length > 2){ //check for multiple fractions
+            result = 'invalid'
+            return result;
+          } else {
+            result = Number(fraction[0]) / Number(fraction[1]);
+          }
+      } else if (result.includes('.')){
+      	if (result.split('.').length > 2){
+        	result = 'invalid';
+          return result;
+        } else {
+        return Number(result);
+        }
+      }
     }
     
     return result;
