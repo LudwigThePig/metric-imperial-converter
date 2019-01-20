@@ -92,7 +92,7 @@ function ConvertHandler() {
         result = initNum * galToL;
         break;
         
-      case 'L':
+      case 'l':
         result = initNum / galToL;
         break;
         
@@ -131,10 +131,10 @@ function ConvertHandler() {
     return units[LC];
   }
   
-  this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-    var result;
-    
-    return result;
+  this.getString = function(initNum, initUnit, returnNum, returnUnit) {    
+    let initSpell = this.spellOutUnit(initUnit);
+    let returnSpell = this.spellOutUnit(returnUnit);
+    return `${initNum} ${initSpell} is equal to ${returnNum} ${returnSpell}`;
   };
   
 }

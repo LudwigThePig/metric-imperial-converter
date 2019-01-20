@@ -21,7 +21,32 @@ module.exports = function (app) {
     res.body = {};
     res.body.initNum = num;
     res.body.initUnit = unit;
-
+    
+    if (res.body.initNum !== 'invalid' && res.body.initUnit !== 'invalid'){
+      res.body.returnNum = convertHandler.convert(num, unit);
+      res.body.returnUnit = convertHandler.getReturnUnit(unit);
+      res.body.string = convertHandler.getString(num, unit, res.body.returnNum, res.body.returnUnit);
+    }
+    
+    next()
+  }, function(req, res){
+    let response;
+    if (res.body.initNum === 'invalid' && res.body.initUnit === 'invalid'){
+      response = Object.assign({}, res.body, {string: 'Invalid Number and Unit'});
+    } else if (res.body.initNum === 'invalid'){
+      response = Object.assign({}, res.body, {string: 'Invalid Number Input'});
+    } else if (res.body.initUnit === 'invalid'){
+      response = Object.assign({}, res.body, {string: 'Invalid Number and Unit'});
+    } else {
+      response = {
+        initNum: res.body.initNum,
+        initUnit: res.body.initUnit,
+        returnNum: res.body.returnNum,
+        returnUnit: res.body.returnUnit,
+        string: res.body.strinig
+      }
+    }
+    res.status(200).json(response);
   });
 
 };
