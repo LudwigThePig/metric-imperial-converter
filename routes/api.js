@@ -1,52 +1,63 @@
 'use strict';
 
+var express = require('express');
+var bodyParser = require('body-parser');
 var expect = require('chai').expect;
-var ConvertHandler = require('../controllers/convertHandler.js');
+var cors = require('cors');
+const helmet = require('helmet');
+var apiRoutes = require('./routes/api.js');
+var fccTestingRoutes = require('./routes/fcctesting.js');
+var runner = require('./test-runner');
 
-module.exports = function (app) {
-  app.route('/', (req, res)=>{
-    res.sendFile(process.cwd() + '/views/index.html')
+var app = express();
+
+app.use('/public', express.static(process.cwd() + '/public'));
+
+app.use(cors({origin: '*'})); //For FCC testing purposes only
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(helmet({
+  hidePoweredBy: true,
+  noSniff: true,
+  xssFilter: true
+}));
+
+//Index page (static HTML)
+app.route('/')
+  .get(function (req, res) {
+    res.sendFile(process.cwd() + '/views/index.html');
   });
-  
-  var convertHandler = new ConvertHandler();
 
-  app.route('/api/convert')
-    .get(function (req, res, next){
+//For FCC testing purposes
+fccTestingRoutes(app);
 
-    const input = req.query.input;
+//Routing for API 
+apiRoutes(app);  
     
-    const num = convertHandler.getNum(input.body);
-    const unit = convertHandler.getUnit(input.body);
-    
-    res.body = {};
-    res.body.initNum = num;
-    res.body.initUnit = unit;
-    
-    if (res.body.initNum !== 'invalid' && res.body.initUnit !== 'invalid'){
-      res.body.returnNum = convertHandler.convert(num, unit);
-      res.body.returnUnit = convertHandler.getReturnUnit(unit);
-      res.body.string = convertHandler.getString(num, unit, res.body.returnNum, res.body.returnUnit);
-    }
-    
-    next()
-  }, function(req, res){
-    let response;
-    if (res.body.initNum === 'invalid' && res.body.initUnit === 'invalid'){
-      response = Object.assign({}, res.body, {string: 'Invalid Number and Unit'});
-    } else if (res.body.initNum === 'invalid'){
-      response = Object.assign({}, res.body, {string: 'Invalid Number Input'});
-    } else if (res.body.initUnit === 'invalid'){
-      response = Object.assign({}, res.body, {string: 'Invalid Number and Unit'});
-    } else {
-      response = {
-        initNum: res.body.initNum,
-        initUnit: res.body.initUnit,
-        returnNum: res.body.returnNum,
-        returnUnit: res.body.returnUnit,
-        string: res.body.strinig
+//404 Not Found Middleware
+app.use(function(req, res, next) {
+  res.status(404)
+    .type('text')
+    .send('Not Found');
+});
+
+//Start our server and tests!
+app.listen(process.env.PORT || 3000, function () {
+  console.log("Listening on port " + process.env.PORT);
+  if(process.env.NODE_ENV==='test') {
+    console.log('Running Tests...');
+    setTimeout(function () {
+      try {
+        runner.run();
+      } catch(e) {
+        var error = e;
+          console.log('Tests are not valid:');
+          console.log(error);
       }
-    }
-    res.status(200).json(response);
-  });
+    }, 1500);
+  }
+});
 
-};
+module.exports = app; //for testing

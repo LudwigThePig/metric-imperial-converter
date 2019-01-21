@@ -12,64 +12,38 @@
     <link rel="stylesheet" href="../public/style.css">
     
     <!-- import the webpage's client-side javascript file -->
-    <script src="/client.js" defer></script>
+<!--     <script src="/client.js" defer></script> -->
   </head>
   <body>
-    <header>
-      <h1>
-        Convert Imperial and Metric
-      </h1>
-    </header>
-
-    <main>   
+      
+    <div id="form">
+      <h1>Convert Imperial and Metric</h1>
+      <form id="convertForm" class="border">
+        <input type="text" id="convertField" name="input" placeholder="3.1mi" style="width: 200px">
+        <input id="convert" type="submit" value="Convert!">
+      </form>
+      <p id="result"></p>
+      <code id="jsonResult"></code>
+    </div>
+    
+    <div id="examples" style="margin-left: 5%; margin-top: 5%">
+      <h3>Example usage:</h3>
+      <code>/api/convert?input=kg</code><br>
+      <h3>Example return:</h3>
+      <code>{initNum: 3.1, initUnit: 'mi', returnNum: 5.0000008, returnUnit: 'km', string: '3.1 miles converts to 5.00002 kilometers'}</code>
+    </div>
+    
+    <div id="supportedUnits">
       <p>Supported units:</p>
       <p><b>Volume</b> 'gal', 'L'</p>
       <p><b>Distance</b> 'mi', 'k'</p>
       <p><b>Volume</b> 'lb', 'kg'</p>
-      
-      <form>
-        <input name="convert-field" type="text" maxlength="100" placeholder="Convert Me!" aria-labelledby="submit-dream">
-        <button type="submit" id="submit-dream">Convert</button>
-      </form>
-
-      <div>
-        <h2>How to use:</h2>
-        <p>1. Add your input into a url... '/api/convert?input=|HERE|', or use the provide form.</p>
-        <p>2. Select a unit from the supported unit list</p>
-        <p>3. Prepend a value to the unit.</p>
-      </div>
-    </main>
-    <div id='userstories' style='margin-left: 5%; margin-top: 5%'>
-      <h3>User Stories</h3>
-      <ol>
-        <li>I will help prevent the client from trying to guess(sniff) the MIME type.</li>
-        <li>I will prevent cross-site scripting (XSS) attacks.</li>
-        <li>I can <b>GET</b> <code>/api/convert</code> with a single parameter containing an accepted number and unit and have it converted.</li>
-        <li>Hint: Split the input by looking for the index of the first character.</li>
-        <li>I can convert 'gal' to 'L' and vice versa. <b>(1 gal to 3.78541 L)</b></li>
-        <li>I can convert 'lbs' to 'kg' and vice versa. <b>(1 lbs to 0.453592 kg)</b></li> 
-        <li>I can convert 'mi' to 'km' and vice versa. <b>(1 mi to 1.60934 km)</b></li>
-        <li>If my unit of measurement is invalid, returned will be 'invalid unit'.</li>
-        <li>If my number is invalid, returned with will 'invalid number'.</li>
-        <li>If both are invalid, return will be 'invalid number and unit'.</li>
-        <li>I can use fractions, decimals or both in my parameter(ie. 5, 1/2, 2.5/6), but if nothing is provided it will default to 1.</li>
-        <li>My return will consist of the initNum, initUnit, returnNum, returnUnit, and string spelling out units in format <code>{initNum} {initial_Units} converts to {returnNum} {return_Units}</code> with the result rounded to 5 decimals.</li>
-        <li>All 16 unit tests are complete and passing.</li>
-        <li>All 5 functional tests are complete and passing.</li>
-      </ol>
-      <h3>Example usage:</h3>
-      <code>/api/convert?input=4gal</code><br>
-      <code>/api/convert?input=1/2km</code><br>
-      <code>/api/convert?input=5.4/3lbs</code><br>
-      <code>/api/convert?input=kg</code><br>
-      <h3>Example return:</h3>
-      <code>{initNum: 3.1, initUnit: 'mi', returnNum: 5.0000008, returnUnit: 'km', string: '3.1 miles converts to 5.00002 kilometers'}</code>
     </div>
         <!-- Your web-app is https, so your scripts need to be too -->
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
             crossorigin="anonymous"></script>
-    <script>
+ <script>
       $(function() {
         $('#convertForm').submit(function() {
           event.preventDefault();

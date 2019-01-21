@@ -1,7 +1,8 @@
 function ConvertHandler() {
   
   this.getNum = function(input) {
-    let firstLetter = input.indexOf(input.match(/[a-z]/i));
+    let regex = /[a-z]/i
+    let firstLetter = input.indexOf(input.match(regex));
     let result;
     
     if (firstLetter === 0){ //starts with letter
@@ -134,7 +135,7 @@ function ConvertHandler() {
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {    
     let initSpell = this.spellOutUnit(initUnit);
     let returnSpell = this.spellOutUnit(returnUnit);
-    return `${initNum} ${initSpell} is equal to ${returnNum} ${returnSpell}`;
+    return `${initNum} ${initSpell} is equal to ${returnNum} ${returnUnit}`;
   };
   
 }
