@@ -26,7 +26,7 @@ suite('Functional Tests', function() {
         .end(function(err, res){
           assert.equal(res.status, 200);
           assert.equal(res.body.initNum, 10);
-          assert.equal(res.body.initUnit, 'L');
+          assert.equal(res.body.initUnit, 'l');
           assert.approximately(res.body.returnNum, 2.64172, 0.1);
           assert.equal(res.body.returnUnit, 'gal');
           done();
@@ -34,23 +34,50 @@ suite('Functional Tests', function() {
       });
       
       test('Convert 32g (invalid input unit)', function(done) {
-        
-        //done();
+        chai.request(server)
+          .get('/api/convert')
+          .query({input: '10Litres'})
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.equal(res.body.initNum, 10);
+            assert.equal(res.body.initUnit, 'invalid');
+          });
+        done();
       });
       
       test('Convert 3/7.2/4kg (invalid number)', function(done) {
-        
-        //done();
+        chai.request(server)
+          .get('/api/convert')
+          .query({input: '10.1.2l'})
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.equal(res.body.initNum, 'invalid');
+            assert.equal(res.body.initUnit, 'l');
+          });
+        done();
       });  
       
       test('Convert 3/7.2/4kilomegagram (invalid number and unit)', function(done) {
-        
-        //done();
+        chai.request(server)
+          .get('/api/convert')
+          .query({input: '1.2.3Litres'})
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.equal(res.body.unit, 'invalid');
+          });
+        done();
       });
       
       test('Convert kg (no number)', function(done) {
-        
-        //done();
+        chai.request(server)
+          .get('/api/convert')
+          .query({input: 'gal'})
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.equal(res.body.initNum, 1);
+            assert.equal(res.body.initUnit, 'gal')
+          });
+        done();
       });
       
     });
